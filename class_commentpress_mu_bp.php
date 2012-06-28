@@ -422,11 +422,16 @@ class CommentPressBuddyPress {
 		global $wpdb;
 		$blog_id = (int)$wpdb->blogid;
 	
-		// check if this blog is a group blog...
-		$group_id = get_groupblog_group_id( $blog_id );
+		// do we have groupblogs?
+		if ( function_exists( 'get_groupblog_group_id' ) ) {
+		
+			// check if this blog is a group blog...
+			$group_id = get_groupblog_group_id( $blog_id );
+			
+		}
 		
 		// when this blog is a groupblog
-		if ( is_numeric( $group_id ) ) {
+		if ( isset( $group_id ) AND is_numeric( $group_id ) ) {
 		
 			// is this user a member?
 			if ( groups_is_user_member( $commentdata['user_id'], $group_id ) ) {
@@ -497,11 +502,16 @@ class CommentPressBuddyPress {
 		global $wpdb;
 		$blog_id = (int)$wpdb->blogid;
 	
-		// check if this blog is a group blog...
-		$group_id = get_groupblog_group_id( $blog_id );
+		// do we have groupblogs?
+		if ( function_exists( 'get_groupblog_group_id' ) ) {
+		
+			// check if this blog is a group blog...
+			$group_id = get_groupblog_group_id( $blog_id );
+			
+		}
 		
 		// when this blog is a groupblog
-		if ( is_numeric( $group_id ) ) {
+		if ( isset( $group_id ) AND is_numeric( $group_id ) ) {
 		
 			// always true - so that activities are registered
 			return 1;
@@ -919,9 +929,14 @@ class CommentPressBuddyPress {
 		// did we get anything?
 		//print_r( $blog_id ); die();
 		
-		// get the group id
-		$group_id = get_groupblog_group_id( $blog_id );
+		// do we have groupblogs?
+		if ( function_exists( 'get_groupblog_group_id' ) ) {
 		
+			// get the group id
+			$group_id = get_groupblog_group_id( $blog_id );
+			
+		}
+			
 		// did we get a group for which this is the group blog?
 		if ( isset( $group_id ) ) {
 			
@@ -1037,11 +1052,19 @@ class CommentPressBuddyPress {
 		
 		//print_r( $button ); die();
 		
+		// access global
 		global $blogs_template;
-		if( !get_groupblog_group_id( $blogs_template->blog->blog_id ) ) {
+
+		// do we have groupblogs?
+		if ( 
+		
+			function_exists( 'get_groupblog_group_id' ) AND 
+			!get_groupblog_group_id( $blogs_template->blog->blog_id ) 
 			
+		) {
+				
 			// leave the button untouched?
-			
+				
 		} else {
 			
 			// update link
@@ -1051,6 +1074,9 @@ class CommentPressBuddyPress {
 			
 		}
 		
+		
+		
+		// --<
 		return $button;
 	
 	}
