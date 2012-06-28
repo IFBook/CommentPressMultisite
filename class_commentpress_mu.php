@@ -453,8 +453,12 @@ class CommentPressMultiSite {
 
 
 			// get all themes
-			$themes = wp_get_themes();
-			
+			if ( function_exists( 'wp_get_themes' ) ) {
+				$themes = wp_get_themes();
+			} else {
+				$themes = get_themes();
+			}
+				
 			// get Commentpress theme by default, but allow overrides
 			$target_theme = apply_filters(
 				'cp_groupblog_theme_name',
