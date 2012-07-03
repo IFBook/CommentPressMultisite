@@ -156,18 +156,37 @@ class CommentPressBuddyPress {
 		if ( !is_super_admin() ) { return false; }
 		
 		
-	
-		// Add the admin page to the BuddyPress menu
-		$page = add_submenu_page( 
 		
-			'bp-general-settings', 
-			__( 'CommentPress Setup', 'cp-multisite' ), 
-			__( 'CommentPress Setup', 'cp-multisite' ), 
-			'manage_options', 
-			'cpmu_admin_page_bp', 
-			array( &$this, 'admin_page' )
+		// for BP1.6+
+		if ( version_compare( substr( BP_VERSION, 0, 3 ), '1.6', '>=' ) ) {
+		
+			// always add the admin page to the Settings menu
+			$page = add_submenu_page( 
 			
-		);
+				'settings.php', 
+				__( 'Commentpress for BuddyPress', 'cp-multisite' ), 
+				__( 'Commentpress for BuddyPress', 'cp-multisite' ), 
+				'manage_options', 
+				'cpmu_admin_page_bp', 
+				array( &$this, 'admin_page' )
+				
+			);
+			
+		} else {
+		
+			// Add the admin page to the BuddyPress menu
+			$page = add_submenu_page( 
+			
+				'bp-general-settings', 
+				__( 'CommentPress Setup', 'cp-multisite' ), 
+				__( 'CommentPress Setup', 'cp-multisite' ), 
+				'manage_options', 
+				'cpmu_admin_page_bp', 
+				array( &$this, 'admin_page' )
+				
+			);
+		
+		}
 		
 		// add styles only on bp-groupblog admin page, see:
 		// http://codex.wordpress.org/Function_Reference/wp_enqueue_script#Load_scripts_only_on_plugin_pages
