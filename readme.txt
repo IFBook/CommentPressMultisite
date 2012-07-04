@@ -12,8 +12,8 @@ Commentpress for Multisite integrates CommentPress in a WordPress Multisite envi
 
 == Installation ==
 
-1) unzip the .zip file into `/wp-content/plugins/commentpress-mu`
-2) move `bp-settings/bp-custom.php` into `/wp-content/plugins`
+1) Unzip the .zip file into `/wp-content/plugins/commentpress-mu`
+2) If you are using BuddyPress and you don't already have a custom settings file, move `bp-settings/bp-custom.php` into `/wp-content/plugins`. If you do, then make sure you're enabling BP_USE_WP_ADMIN_BAR, which is the default setting for BuddyPress 1.6+
 3) Network activate the plugin
 4) You are done!
 
