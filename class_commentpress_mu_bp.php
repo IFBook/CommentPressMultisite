@@ -264,27 +264,10 @@ class CommentPressBuddyPress {
 		
 		
 	
-	
-		// check for BP Template Pack installation
-
-		// assume not installed
-		$tpack = '<p class="alert">Please install BP Template Pack correctly</p>';
-		
-		// is it installed?
-		if ( function_exists( 'bp_tpack_loader' ) ) {
-			
-			// we've got it
-			$tpack = '<p>BP Template Pack installed</p>';
-			
-		}
-		
-		
-	
-	
 		// check for group blog installation
 
 		// assume not installed
-		$env = '<p class="alert">Please install BP Group Blog correctly</p>';
+		$grp = '<p class="alert">Please install BP Group Blog correctly</p>';
 		
 		// try and get a bp-groupblog option
 		$groupblog = get_site_option( 'bp_groupblog_blog_defaults_options', array() );
@@ -294,7 +277,7 @@ class CommentPressBuddyPress {
 		if ( !empty( $groupblog ) ) {
 			
 			// we've got it
-			$env = '<p>BP Group Blog installed</p>';
+			$grp = '<p>BP Group Blog installed</p>';
 			
 		}
 		
@@ -317,8 +300,7 @@ class CommentPressBuddyPress {
 <p style="padding-top: 30px;">Checking environment...</p>
 
 '.$bp.'
-'.$tpack.'
-'.$env.'
+'.$grp.'
 
 
 
@@ -384,6 +366,24 @@ class CommentPressBuddyPress {
 			kses_remove_filters();
 		
 		}
+	}
+	
+	
+	
+
+
+
+	/**
+	 * Allow HTML in Activity items
+	 */
+	function activity_allowed_tags( $activity_allowedtags ) {
+		
+		// pretty pointless not to allow p tags when we encourage the use of TinyMCE!
+		$activity_allowedtags['p'] = array();
+		
+		// --<
+		return $activity_allowedtags;
+		
 	}
 	
 	
@@ -689,6 +689,10 @@ class CommentPressBuddyPress {
 		
 		// set unique type
 		$activity->type = 'new_groupblog_comment';
+		
+		
+		
+		// note: BP seemingly runs content through wp_filter_kses (sad face)
 		
 
 
@@ -1208,6 +1212,9 @@ class CommentPressBuddyPress {
 		
 		// enable html comments and content for authors
 		add_action( 'init', array( &$this, 'allow_html_content' ) );
+		
+		// add some tags to the allowed tags in activities
+		add_filter( 'bp_activity_allowed_tags', array( &$this, 'activity_allowed_tags' ), 20 );
 		
 		// allow comment authors to edit their own comments
 		add_filter( 'map_meta_cap', array( &$this, 'enable_comment_editing' ), 10, 4 );
@@ -1956,7 +1963,10 @@ class CommentPressBuddyPress {
 		*/
 		
 		// reset all widgets
-		update_option( 'sidebars_widgets', null );			
+		update_option( 'sidebars_widgets', null );
+		
+		// switch comments_notify off if we've got BuddyPress Group Email Subscription installed
+		update_option( 'comments_notify', 0 );
 		
 	}
 	

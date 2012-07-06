@@ -237,7 +237,7 @@ class CommentPressMultiSite {
 		
 		
 		// show a message for now
-		$msg = '<p>Here.</p>';		
+		$msg = '<p>Holding page. No options are set here as yet.</p>';		
 		
 	
 	

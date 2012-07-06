@@ -302,21 +302,6 @@ class CommentPressMultiSiteLoader {
 		
 		
 		
-		// check for BuddyPress Template Pack
-		if ( !function_exists( 'bp_tpack_loader' ) ) {
-		
-			// store in context array
-			$this->context['bp_tpack'] = false;
-			
-		} else {
-			
-			// store in context array
-			$this->context['bp_tpack'] = true;
-			
-		}
-		
-		
-		
 		// check for BP Groupblog installation
 		$groupblog = get_site_option( 'bp_groupblog_blog_defaults_options', array() );
 		
@@ -338,11 +323,10 @@ class CommentPressMultiSiteLoader {
 		// set flag
 		$this->is_buddypress = false;
 	
-		// if we have BuddyPress and BP Template Pack...
+		// if we have BuddyPress...
 		if ( 
 		
-			$this->context['buddypress'] == true AND
-			$this->context['bp_tpack'] == true
+			$this->context['buddypress'] == true
 			
 		) {
 		
@@ -356,11 +340,10 @@ class CommentPressMultiSiteLoader {
 		// set flag
 		$this->is_groupblog = false;
 	
-		// if we have all three...
+		// if we have BP Groupblog as well...
 		if ( 
 		
 			$this->context['buddypress'] == true AND
-			$this->context['bp_tpack'] == true AND
 			$this->context['groupblog'] == true 
 			
 		) {
