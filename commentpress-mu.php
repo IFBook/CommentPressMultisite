@@ -112,17 +112,17 @@ function _cpmu_environment() {
 	if ( !is_admin() ) {
 		
 		// dump our environment
-		echo 'TEMPLATEPATH<br />'.TEMPLATEPATH.'<br /><br />';
-		echo 'STYLESHEETPATH<br />'.STYLESHEETPATH.'<br /><br />';
-		echo 'stylesheet_directory<br />'.get_bloginfo('stylesheet_directory').'<br /><br />';
-		echo 'template_directory<br />'.get_bloginfo('template_directory').'<br /><br />';	
-		echo 'template_url<br />'.get_bloginfo('template_url').'<br /><br />';	
-		echo 'stylesheet_url<br />'.get_bloginfo('stylesheet_url').'<br /><br />';
-		echo 'get_stylesheet_directory<br />'.get_stylesheet_directory().'<br /><br />';
-		echo 'get_stylesheet_directory_uri<br />'.get_stylesheet_directory_uri().'<br /><br />';
-		echo 'get_template_directory<br />'.get_template_directory().'<br /><br />';
-		echo 'get_template_directory_uri<br />'.get_template_directory_uri().'<br /><br />';
-		echo 'locate_template<br />'.locate_template( array( 'style/js/cp_js_common.js' ), false ).'<br /><br />';
+		echo '<strong>TEMPLATEPATH</strong><br />'.TEMPLATEPATH.'<br /><br />';
+		echo '<strong>STYLESHEETPATH</strong><br />'.STYLESHEETPATH.'<br /><br />';
+		echo '<strong>template_directory</strong><br />'.get_bloginfo('template_directory').'<br /><br />';	
+		echo '<strong>stylesheet_directory</strong><br />'.get_bloginfo('stylesheet_directory').'<br /><br />';
+		echo '<strong>template_url</strong><br />'.get_bloginfo('template_url').'<br /><br />';	
+		echo '<strong>stylesheet_url</strong><br />'.get_bloginfo('stylesheet_url').'<br /><br />';
+		echo '<strong>get_template_directory</strong><br />'.get_template_directory().'<br /><br />';
+		echo '<strong>get_stylesheet_directory</strong><br />'.get_stylesheet_directory().'<br /><br />';
+		echo '<strong>get_stylesheet_directory_uri</strong><br />'.get_stylesheet_directory_uri().'<br /><br />';
+		echo '<strong>get_template_directory_uri</strong><br />'.get_template_directory_uri().'<br /><br />';
+		echo '<strong>locate_template</strong><br />'.locate_template( array( 'style/js/cp_js_common.js' ), false ).'<br /><br />';
 		die();
 	
 	}
