@@ -1653,6 +1653,29 @@ class CommentPressBuddyPress {
 		// reset all widgets
 		update_option( 'sidebars_widgets', null );			
 		
+		// get all network-activated plugins
+		$active_sitewide_plugins = maybe_unserialize( get_site_option( 'active_sitewide_plugins' ) );
+		
+		// did we get any?
+		if ( is_array( $active_sitewide_plugins ) AND count( $active_sitewide_plugins ) > 0 ) {
+		
+			// loop through them
+			foreach( $active_sitewide_plugins AS $plugin_path => $plugin_data ) {
+			
+				// if we've got BuddyPress Group Email Subscription network-installed
+				if ( false !== strstr( $plugin_path, 'bp-activity-subscription.php' ) ) {
+				
+					// switch comments_notify off
+					update_option( 'comments_notify', 0 );
+					
+					// no need to carry on
+					break;
+							
+				}
+		
+			}
+		
+		}
 		
 		
 		
@@ -1667,7 +1690,7 @@ class CommentPressBuddyPress {
 
 
 	/** 
-	 * @description: hook into theblog create screen on registration page
+	 * @description: hook into the blog create screen on registration page
 	 * @todo:
 	 *
 	 */
@@ -1840,7 +1863,7 @@ class CommentPressBuddyPress {
 			$this->_activate_plugin( $path_to_plugin, true );
 			
 			// do post install
-			$this->_do_post_install();
+			$this->_do_blog_post_install();
 			
 		}
 		
@@ -1874,7 +1897,7 @@ class CommentPressBuddyPress {
 	 * @todo:
 	 *
 	 */
-	function _do_post_install() {
+	function _do_blog_post_install() {
 	
 		global $commentpress_obj, $wpdb;
 	
@@ -1964,9 +1987,6 @@ class CommentPressBuddyPress {
 		
 		// reset all widgets
 		update_option( 'sidebars_widgets', null );
-		
-		// switch comments_notify off if we've got BuddyPress Group Email Subscription installed
-		update_option( 'comments_notify', 0 );
 		
 	}
 	
