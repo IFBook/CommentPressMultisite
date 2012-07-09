@@ -19,7 +19,7 @@ Commentpress for Multisite integrates CommentPress in a WordPress Multisite envi
 
 == Other Notes ==
 
-TBA
+For compatibility with BuddyPress Group Email Subscription, please make sure that BuddyPress Group Email Subscription is network activated, or else comment and post notifications will not be registered in groupblogs.
 
 == Screenshots ==
 

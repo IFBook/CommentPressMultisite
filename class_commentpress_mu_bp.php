@@ -1526,7 +1526,7 @@ class CommentPressBuddyPress {
 		
 		
 		// get Commentpress plugin
-		$path_to_plugin = $this->_find_plugin_by_name( 'Commentpress' );
+		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
 		
 		// if we got Commentpress...
 		if ( false !== $path_to_plugin ) 	{
@@ -1546,6 +1546,10 @@ class CommentPressBuddyPress {
 			
 			
 			
+			// TODO: create admin page settings
+		
+
+
 			// install CP pages
 			$commentpress_obj->db->create_special_pages();
 			
@@ -1623,7 +1627,7 @@ class CommentPressBuddyPress {
 		
 		
 		// get CP Ajaxified
-		$path_to_plugin = $this->_find_plugin_by_name( 'Commentpress Ajaxified' );
+		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress Ajaxified' );
 		
 		// if we got it...
 		if ( false !== $path_to_plugin ) {
@@ -1653,6 +1657,29 @@ class CommentPressBuddyPress {
 		// reset all widgets
 		update_option( 'sidebars_widgets', null );			
 		
+		// get all network-activated plugins
+		$active_sitewide_plugins = maybe_unserialize( get_site_option( 'active_sitewide_plugins' ) );
+		
+		// did we get any?
+		if ( is_array( $active_sitewide_plugins ) AND count( $active_sitewide_plugins ) > 0 ) {
+		
+			// loop through them
+			foreach( $active_sitewide_plugins AS $plugin_path => $plugin_data ) {
+			
+				// if we've got BuddyPress Group Email Subscription network-installed
+				if ( false !== strstr( $plugin_path, 'bp-activity-subscription.php' ) ) {
+				
+					// switch comments_notify off
+					update_option( 'comments_notify', 0 );
+					
+					// no need to carry on
+					break;
+							
+				}
+		
+			}
+		
+		}
 		
 		
 		
@@ -1667,7 +1694,7 @@ class CommentPressBuddyPress {
 
 
 	/** 
-	 * @description: hook into theblog create screen on registration page
+	 * @description: hook into the blog create screen on registration page
 	 * @todo:
 	 *
 	 */
@@ -1831,7 +1858,7 @@ class CommentPressBuddyPress {
 		
 		
 		// get Commentpress plugin
-		$path_to_plugin = $this->_find_plugin_by_name( 'Commentpress' );
+		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
 		
 		// if we got Commentpress...
 		if ( false !== $path_to_plugin ) 	{
@@ -1840,14 +1867,14 @@ class CommentPressBuddyPress {
 			$this->_activate_plugin( $path_to_plugin, true );
 			
 			// do post install
-			$this->_do_post_install();
+			$this->_do_blog_post_install();
 			
 		}
 		
 		
 		
 		// get CP Ajaxified
-		$path_to_plugin = $this->_find_plugin_by_name( 'Commentpress Ajaxified' );
+		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress Ajaxified' );
 		
 		// if we got it...
 		if ( false !== $path_to_plugin ) {
@@ -1874,7 +1901,7 @@ class CommentPressBuddyPress {
 	 * @todo:
 	 *
 	 */
-	function _do_post_install() {
+	function _do_blog_post_install() {
 	
 		global $commentpress_obj, $wpdb;
 	
@@ -1893,6 +1920,8 @@ class CommentPressBuddyPress {
 		Configure Commentpress based on admin page settings
 		------------------------------------------------------------------------
 		*/
+		
+		// TODO: create admin page settings
 		
 		// check our special pages option
 		if ( 1 == 1 ) {
@@ -1965,9 +1994,6 @@ class CommentPressBuddyPress {
 		// reset all widgets
 		update_option( 'sidebars_widgets', null );
 		
-		// switch comments_notify off if we've got BuddyPress Group Email Subscription installed
-		update_option( 'comments_notify', 0 );
-		
 	}
 	
 	
@@ -2031,108 +2057,6 @@ class CommentPressBuddyPress {
 		// --<
 		return false;
 		
-	}
-	
-	
-	
-	
-	
-	
-	/** 
-	 * @description: get WP plugin reference by name (since we never know for sure what the enclosing
-	 * directory is called)
-	 * @todo: 
-	 *
-	 */
-	function _find_plugin_by_name( $plugin_name = '' ) {
-	
-		// kick out if no param supplied
-		if ( $plugin_name == '' ) { return false; }
-	
-	
-	
-		// init path
-		$path_to_plugin = false;
-		
-		// get plugins
-		$plugins = get_plugins();
-		//print_r( $plugins ); die();
-		
-		// because the key is the path to the plugin file, we have to find the
-		// key by iterating over the values (which are arrays) to find the
-		// plugin with the name Commentpress. Doh!
-		foreach( $plugins AS $key => $plugin ) {
-		
-			// is it ours?
-			if ( $plugin['Name'] == $plugin_name ) {
-			
-				// now get the key, which is our path
-				$path_to_plugin = $key;
-				break;
-			
-			}
-		
-		}
-		
-		
-		
-		// --<
-		return $path_to_plugin;
-		
-	}
-	
-	
-	
-	
-	
-	/*
-	--------------------------------------------------------------------------------
-	Force a plugin to activate: adapted from https://gist.github.com/1966425
-	Audited with reference to activate_plugin() with extra commenting inline
-	--------------------------------------------------------------------------------
-	*/
-	
-	/** 
-	 * @description: Helper to activate a plugin on another site without causing a 
-	 * fatal error by including the plugin file a second time
-	 * Based on activate_plugin() in wp-admin/includes/plugin.php
-	 * $buffer option is used for plugins which send output
-	 * @todo: 
-	 *
-	 */
-	function _activate_plugin($plugin, $buffer = false) {
-		
-		// find our already active plugins
-		$current = get_option('active_plugins', array());
-		
-		// no need to validate it...
-		
-		// check that the plugin isn't already active
-		if ( !in_array($plugin, $current) ) {
-		
-			// no need to redirect...
-		
-			// open buffer if required
-			if ($buffer) { ob_start(); }
-			
-			// safe include
-			include_once( WP_PLUGIN_DIR . '/' . $plugin );
-			
-			// no need to check silent activation, just go ahead...
-			do_action('activate_plugin', $plugin);
-			do_action('activate_' . $plugin);
-			
-			// housekeeping
-			$current[] = $plugin;
-			sort($current);
-			update_option('active_plugins', $current);
-			do_action('activated_plugin', $plugin);
-			
-			// close buffer if required
-			if ($buffer) { ob_end_clean(); }
-	
-		}
-	
 	}
 	
 	
