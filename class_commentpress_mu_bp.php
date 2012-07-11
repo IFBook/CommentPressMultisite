@@ -1532,7 +1532,7 @@ class CommentPressBuddyPress {
 		if ( false !== $path_to_plugin ) 	{
 
 			// activate it in its buffered sandbox
-			$this->_activate_plugin( $path_to_plugin, true );
+			cpmu_activate_plugin( $path_to_plugin, true );
 			
 			global $commentpress_obj, $wpdb;
 			
@@ -1633,7 +1633,7 @@ class CommentPressBuddyPress {
 		if ( false !== $path_to_plugin ) {
 
 			// activate it in its buffered sandbox
-			$this->_activate_plugin( $path_to_plugin, true );
+			cpmu_activate_plugin( $path_to_plugin, true );
 			
 		}
 		
@@ -1864,7 +1864,7 @@ class CommentPressBuddyPress {
 		if ( false !== $path_to_plugin ) 	{
 
 			// activate it in its buffered sandbox
-			$this->_activate_plugin( $path_to_plugin, true );
+			cpmu_activate_plugin( $path_to_plugin, true );
 			
 			// do post install
 			$this->_do_blog_post_install();
@@ -1880,7 +1880,7 @@ class CommentPressBuddyPress {
 		if ( false !== $path_to_plugin ) {
 
 			// activate it in its buffered sandbox
-			$this->_activate_plugin( $path_to_plugin, true );
+			cpmu_activate_plugin( $path_to_plugin, true );
 			
 		}
 		
