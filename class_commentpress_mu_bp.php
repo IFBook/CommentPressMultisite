@@ -1288,7 +1288,7 @@ class CommentPressBuddyPress {
 	function _groupblog_filter_options() {
 		
 		// remove bp-groupblog's contradictory option
-		remove_action( 'bp_group_activity_filter_options', 'bp_groupblog_posts' );
+		remove_action( 'bp_group_activity_filter_options', 'bp_groupblog_posts', 40 );
 		
 		// add our consistent one
 		add_action( 'bp_activity_filter_options', array( &$this, 'groupblog_posts_filter_option' ) );
