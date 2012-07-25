@@ -817,12 +817,71 @@ class CommentPressBuddyPress {
 			__( 'blog post', 'cp-multisite' )
 		);
 		
+		// default to standard BP author
+		$activity_author = bp_core_get_userlink( $post->post_author );
+	
+		// compat with Co-Authors Plus
+		if ( function_exists( 'get_coauthors' ) ) {
+		
+			// get multiple authors
+			$authors = get_coauthors();
+			//print_r( $authors ); die();
+		
+			// if we get some
+			if ( !empty( $authors ) ) {
+			
+				// we only want to override if we have more than one...
+				if ( count( $authors ) > 1 ) {
+					
+					// use the Co-Authors format of "name, name, name and name"
+					$activity_author = '';
+					
+					// init counter
+					$n = 1;
+					
+					// find out how many author we have
+					$author_count = count( $authors );
+				
+					// loop
+					foreach( $authors AS $author ) {
+						
+						// default to comma
+						$sep = ', ';
+						
+						// if we're on the penultimate
+						if ( $n == ($author_count - 1) ) {
+						
+							// use ampersand
+							$sep = __( ' &amp; ', 'cp-multisite' );
+							
+						}
+						
+						// if we're on the last, don't add
+						if ( $n == $author_count ) { $sep = ''; }
+						
+						// add name
+						$activity_author .= bp_core_get_userlink( $author->ID );
+						
+						// and separator
+						$activity_author .= $sep;
+						
+						// increment
+						$n++;
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+			
 		// Replace the necessary values to display in group activity stream
 		$activity->action = sprintf( 
 		
 			__( '%s wrote a new %s %s in the group %s:', 'cp-multisite' ),
 			
-			bp_core_get_userlink( $post->post_author ), 
+			$activity_author, 
 			$activity_name, 
 			'<a href="' . get_permalink( $post->ID ) .'">' . esc_attr( $post->post_title ) . '</a>', 
 			'<a href="' . bp_get_group_permalink( $group ) . '">' . esc_attr( $group->name ) . '</a>' 
