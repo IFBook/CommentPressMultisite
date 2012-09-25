@@ -350,7 +350,7 @@ class CommentPressMultisiteAdmin {
 
 
 	 	// was the form submitted?
-		if( isset( $_POST['cp_submit'] ) ) {
+		if( isset( $_POST['cpmu_submit'] ) ) {
 			
 
 
@@ -360,7 +360,10 @@ class CommentPressMultisiteAdmin {
 			
 			
 			// init vars
+			$cp_upgrade = '0';
+			$cp_reset = '0';
 			$cpmu_title_page_content = '';
+			
 			
 
 			// get variables
@@ -394,11 +397,13 @@ class CommentPressMultisiteAdmin {
 
 
 			
-			// Commentpress params 
-
+			// Commentpress Multisite params 
+			
+			/*
 			// default title page content
 			$cpmu_title_page_content = $wpdb->escape( $cpmu_title_page_content );
 			$this->option_set( 'cpmu_title_page_content', $cpmu_title_page_content );
+			*/
 			
 			
 			

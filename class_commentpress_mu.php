@@ -163,6 +163,11 @@ class CommentPressMultiSite {
 		
 		
 	
+		// try and update options
+		$saved = $this->db->options_update();
+		
+
+
 		// always add the admin page to the Settings menu
 		$page = add_submenu_page( 
 		
