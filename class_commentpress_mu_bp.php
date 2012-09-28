@@ -1555,35 +1555,13 @@ class CommentPressBuddyPress {
 		// ----------------------
 		// Activate CommentPress
 		// ----------------------
+		
+		
+		
+		// no longer activate the theme here - moved to the Commentpress plugin
 
 
 
-		// get all themes
-		if ( function_exists( 'wp_get_themes' ) ) {
-			$themes = wp_get_themes();
-		} else {
-			$themes = get_themes();
-		}
-			
-		// get Commentpress theme by default, but allow overrides
-		$target_theme = apply_filters(
-			'cp_groupblog_theme_name',
-			'Commentpress'
-		);
-		
-		// the key is the theme name
-		if ( isset( $themes[ $target_theme ] ) ) {
-			
-			// activate it
-			switch_theme( 
-				$themes[ $target_theme ]['Template'], 
-				$themes[ $target_theme ]['Stylesheet'] 
-			);
-	
-		}
-		
-		
-		
 		// get Commentpress plugin
 		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
 		
@@ -1610,7 +1588,7 @@ class CommentPressBuddyPress {
 
 
 			// install CP pages
-			$commentpress_obj->db->create_special_pages();
+			//$commentpress_obj->db->create_special_pages();
 			
 			
 			
