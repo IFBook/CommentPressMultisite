@@ -300,7 +300,7 @@ class CommentPressMultiSiteLoader {
 	function _check_dependencies() {
 	
 		// is BuddyPress installed?
-		if ( !defined( 'BP_VERSION' ) ) {
+		if ( !isset( $GLOBALS['bp'] ) ) {
 			
 			// store in context array
 			$this->context['buddypress'] = false;
