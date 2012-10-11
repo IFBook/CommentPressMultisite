@@ -675,6 +675,16 @@ class CommentPressMultiSite {
 	
 		// update wp option
 		update_option( 'comment_registration', $anon_comments );
+
+		// add Lorem Ipsum to "Sample Page" if the Network setting is empty?
+		$first_page = get_site_option( 'first_page' );
+		
+		// is it empty?
+		if ( $first_page == '' ) {
+			
+			// get it & update content, or perhaps delete?
+			
+		}
 		*/
 		
 		// reset all widgets
