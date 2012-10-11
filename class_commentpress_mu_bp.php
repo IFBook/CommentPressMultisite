@@ -157,8 +157,8 @@ class CommentPressBuddyPress {
 		
 		
 		
-		// for BP1.6+
-		if ( version_compare( substr( BP_VERSION, 0, 3 ), '1.6', '>=' ) ) {
+		// for BP1.6+ (1.6 introduced 'bp_get_version')
+		if ( function_exists( 'bp_get_version' ) ) {
 		
 			// always add the admin page to the Settings menu
 			$page = add_submenu_page( 
@@ -255,7 +255,7 @@ class CommentPressBuddyPress {
 		$bp = '<p class="alert">Please install BuddyPress correctly</p>';
 		
 		// is it installed?
-		if ( defined( 'BP_VERSION' ) ) {
+		if ( isset( $GLOBALS['bp'] ) ) {
 			
 			// we've got it
 			$bp = '<p>BuddyPress installed</p>';
@@ -1309,10 +1309,10 @@ class CommentPressBuddyPress {
 		add_action( 'cpmu_bp_after_blog_details_fields', array( &$this, 'signup_blogform' ) );
 		
 		// activate blog-specific CommentPress plugin
-		add_action('wpmu_new_blog', array( &$this, 'wpmu_new_blog' ), 12, 6); // includes/ms-functions.php
+		add_action( 'wpmu_new_blog', array( &$this, 'wpmu_new_blog' ), 12, 6 ); // includes/ms-functions.php
 	
 		// register any public styles
-		add_action('wp_enqueue_scripts', array( &$this, 'add_frontend_styles' ), 20);
+		add_action( 'wp_enqueue_scripts', array( &$this, 'add_frontend_styles' ), 20 );
 	
 		// is this the back end?
 		if ( is_admin() ) {
@@ -1556,11 +1556,7 @@ class CommentPressBuddyPress {
 		// Activate CommentPress
 		// ----------------------
 		
-		
-		
 		// no longer activate the theme here - moved to the Commentpress plugin
-
-
 
 		// get Commentpress plugin
 		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
@@ -1584,11 +1580,6 @@ class CommentPressBuddyPress {
 			
 			
 			// TODO: create admin page settings
-		
-
-
-			// install CP pages
-			//$commentpress_obj->db->create_special_pages();
 			
 			
 			
@@ -1741,7 +1732,7 @@ class CommentPressBuddyPress {
 		$title = __( 'CommentPress Options', 'cp-multisite' );
 		
 		// define text
-		$text = __( 'Do you want to make the new blog a Commentpress document?', 'cp-multisite' );
+		$text = __( 'Do you want to make the new site a Commentpress document?', 'cp-multisite' );
 		
 		// define enable label
 		$enable_label = __( 'Enable CommentPress', 'cp-multisite' );
@@ -1834,7 +1825,7 @@ class CommentPressBuddyPress {
 			<p>'.$text.'</p>
 
 			<div class="checkbox">
-				<label for="cpmu-new-blog"><input type="checkbox" value="1" id="cpbp-new-blog" name="cpmu-new-blog" /> '.$enable_label.'</label>
+				<label for="cpbp-new-blog"><input type="checkbox" value="1" id="cpbp-new-blog" name="cpbp-new-blog" /> '.$enable_label.'</label>
 			</div>
 
 			'.$workflow_html.'
@@ -1870,30 +1861,6 @@ class CommentPressBuddyPress {
 		// Activate CommentPress
 		// ----------------------
 
-
-
-		// get all themes
-		$themes = get_themes();
-		
-		// get Commentpress theme by default, but allow overrides
-		$target_theme = apply_filters(
-			'cp_groupblog_theme_name',
-			'Commentpress'
-		);
-		
-		// the key is the theme name
-		if ( isset( $themes[ $target_theme ] ) ) {
-			
-			// activate it
-			switch_theme( 
-				$themes[ $target_theme ]['Template'], 
-				$themes[ $target_theme ]['Stylesheet'] 
-			);
-	
-		}
-		
-		
-		
 		// get Commentpress plugin
 		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
 		
@@ -1960,14 +1927,6 @@ class CommentPressBuddyPress {
 		
 		// TODO: create admin page settings
 		
-		// check our special pages option
-		if ( 1 == 1 ) {
-		
-			// install CP pages
-			$commentpress_obj->db->create_special_pages();
-		
-		}
-	
 		// TOC = posts
 		//$commentpress_obj->db->option_set( 'cp_show_posts_or_pages_in_toc', 'post' );
 	
@@ -2026,9 +1985,19 @@ class CommentPressBuddyPress {
 	
 		// update wp option
 		update_option( 'comment_registration', $anon_comments );
+
+		// add Lorem Ipsum to "Sample Page" if the Network setting is empty?
+		$first_page = get_site_option( 'first_page' );
+		
+		// is it empty?
+		if ( $first_page == '' ) {
+			
+			// get it & update content, or perhaps delete?
+			
+		}
 		*/
 		
-		// reset all widgets
+		// try and reset all widgets
 		update_option( 'sidebars_widgets', null );
 		
 	}

@@ -2,7 +2,7 @@
 Contributors: christianwach
 Tags: commentpress,multisite,blogs,content
 Requires at least: WP 3.3
-Tested up to: WP 3.4.1 / BP 1.6
+Tested up to: WP 3.4.2 / BP 1.6
 
 Commentpress for Multisite integrates CommentPress in a WordPress Multisite environment.
 
@@ -27,5 +27,4 @@ TBA
 
 == Changelog == 
 
-= 1.0 =
-* Initial release.
+* See the [commits on GitHub](https://github.com/IFBook/CommentPressMultisite/commits/master)
