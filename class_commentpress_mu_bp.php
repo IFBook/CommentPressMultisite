@@ -1556,11 +1556,7 @@ class CommentPressBuddyPress {
 		// Activate CommentPress
 		// ----------------------
 		
-		
-		
 		// no longer activate the theme here - moved to the Commentpress plugin
-
-
 
 		// get Commentpress plugin
 		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
@@ -1584,11 +1580,6 @@ class CommentPressBuddyPress {
 			
 			
 			// TODO: create admin page settings
-		
-
-
-			// install CP pages
-			//$commentpress_obj->db->create_special_pages();
 			
 			
 			
@@ -1870,30 +1861,6 @@ class CommentPressBuddyPress {
 		// Activate CommentPress
 		// ----------------------
 
-
-
-		// get all themes
-		$themes = get_themes();
-		
-		// get Commentpress theme by default, but allow overrides
-		$target_theme = apply_filters(
-			'cp_groupblog_theme_name',
-			'Commentpress'
-		);
-		
-		// the key is the theme name
-		if ( isset( $themes[ $target_theme ] ) ) {
-			
-			// activate it
-			switch_theme( 
-				$themes[ $target_theme ]['Template'], 
-				$themes[ $target_theme ]['Stylesheet'] 
-			);
-	
-		}
-		
-		
-		
 		// get Commentpress plugin
 		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
 		
@@ -1960,14 +1927,6 @@ class CommentPressBuddyPress {
 		
 		// TODO: create admin page settings
 		
-		// check our special pages option
-		if ( 1 == 1 ) {
-		
-			// install CP pages
-			$commentpress_obj->db->create_special_pages();
-		
-		}
-	
 		// TOC = posts
 		//$commentpress_obj->db->option_set( 'cp_show_posts_or_pages_in_toc', 'post' );
 	

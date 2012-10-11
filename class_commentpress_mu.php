@@ -292,11 +292,21 @@ class CommentPressMultiSite {
 		// EXAMPLES:
 		
 		// add javascripts
-		wp_enqueue_script( 'cpmu-admin-js', CPMU_PLUGIN_URL . 'js/admin.js' );
+		wp_enqueue_script( 
+			
+			'cpmu-admin-js', 
+			CPMU_PLUGIN_URL . 'js/admin.js' 
+			
+		);
 		*/
 		
 		// add css for signup form
-		wp_enqueue_style( 'cpmu-signup-style', CPMU_PLUGIN_URL . 'css/signup.css' );
+		wp_enqueue_style( 
+		
+			'cpmu-signup-style', 
+			CPMU_PLUGIN_URL . 'css/signup.css' 
+			
+		);
 		
 	}
 	
@@ -445,77 +455,9 @@ class CommentPressMultiSite {
 		// test for presence of our checkbox variable in _POST
 		if ( isset( $_POST['cpmu-new-blog'] ) AND $_POST['cpmu-new-blog'] == '1' ) {
 			
+			// hand off to private method
+			$this->_create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta );
 
-
-			// wpmu_new_blog calls this *after* restore_current_blog, so we need to do it again
-			switch_to_blog( $blog_id );
-			
-			
-			
-			// ----------------------
-			// Activate CommentPress
-			// ----------------------
-
-
-
-			// get all themes
-			if ( function_exists( 'wp_get_themes' ) ) {
-				$themes = wp_get_themes();
-			} else {
-				$themes = get_themes();
-			}
-				
-			// get Commentpress theme by default, but allow overrides
-			$target_theme = apply_filters(
-				'cp_groupblog_theme_name',
-				'Commentpress'
-			);
-			
-			// the key is the theme name
-			if ( isset( $themes[ $target_theme ] ) ) {
-				
-				// activate it
-				switch_theme( 
-					$themes[ $target_theme ]['Template'], 
-					$themes[ $target_theme ]['Stylesheet'] 
-				);
-		
-			}
-			
-			
-			
-			// get Commentpress plugin
-			$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
-			
-			// if we got Commentpress...
-			if ( false !== $path_to_plugin ) 	{
-	
-				// activate it in its buffered sandbox
-				cpmu_activate_plugin( $path_to_plugin, true );
-				
-				// do post install
-				$this->_do_post_install();
-				
-			}
-			
-			
-			
-			// get CP Ajaxified
-			$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress Ajaxified' );
-			
-			// if we got it...
-			if ( false !== $path_to_plugin ) {
-	
-				// activate it in its buffered sandbox
-				cpmu_activate_plugin( $path_to_plugin, true );
-				
-			}
-			
-			
-			
-			// switch back
-			restore_current_blog();
-			
 		}
 		
 	}
@@ -594,11 +536,66 @@ class CommentPressMultiSite {
 
 
 	/** 
+	 * @description: create a blog
+	 * @todo:
+	 *
+	 */
+	function _create_blog( $blog_id, $user_id, $domain, $path, $site_id, $meta ) {
+	
+		// wpmu_new_blog calls this *after* restore_current_blog, so we need to do it again
+		switch_to_blog( $blog_id );
+		
+		
+		
+		// ----------------------
+		// Activate CommentPress
+		// ----------------------
+
+		// get Commentpress plugin
+		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress' );
+		
+		// if we got Commentpress...
+		if ( false !== $path_to_plugin ) 	{
+
+			// activate it in its buffered sandbox
+			cpmu_activate_plugin( $path_to_plugin, true );
+			
+			// do post install
+			$this->_do_blog_post_install();
+			
+		}
+		
+		
+		
+		// get CP Ajaxified
+		$path_to_plugin = cpmu_find_plugin_by_name( 'Commentpress Ajaxified' );
+		
+		// if we got it...
+		if ( false !== $path_to_plugin ) {
+
+			// activate it in its buffered sandbox
+			cpmu_activate_plugin( $path_to_plugin, true );
+			
+		}
+		
+		
+		
+		// switch back
+		restore_current_blog();
+		
+	}
+	
+	
+	
+
+
+
+	/** 
 	 * @description: Commentpress initialisation
 	 * @todo:
 	 *
 	 */
-	function _do_post_install() {
+	function _do_blog_post_install() {
 	
 		global $commentpress_obj, $wpdb;
 	
@@ -620,14 +617,6 @@ class CommentPressMultiSite {
 		
 		// TODO: create admin page settings
 		
-		// check our special pages option
-		if ( 1 == 1 ) {
-		
-			// install CP pages
-			$commentpress_obj->db->create_special_pages();
-		
-		}
-	
 		// TOC = posts
 		//$commentpress_obj->db->option_set( 'cp_show_posts_or_pages_in_toc', 'post' );
 	
@@ -689,7 +678,7 @@ class CommentPressMultiSite {
 		*/
 		
 		// reset all widgets
-		update_option( 'sidebars_widgets', null );			
+		update_option( 'sidebars_widgets', null );
 		
 	}
 	
