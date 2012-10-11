@@ -157,8 +157,8 @@ class CommentPressBuddyPress {
 		
 		
 		
-		// for BP1.6+
-		if ( version_compare( substr( BP_VERSION, 0, 3 ), '1.6', '>=' ) ) {
+		// for BP1.6+ (1.6 introduced 'bp_get_version')
+		if ( function_exists( 'bp_get_version' ) ) {
 		
 			// always add the admin page to the Settings menu
 			$page = add_submenu_page( 
@@ -255,7 +255,7 @@ class CommentPressBuddyPress {
 		$bp = '<p class="alert">Please install BuddyPress correctly</p>';
 		
 		// is it installed?
-		if ( defined( 'BP_VERSION' ) ) {
+		if ( isset( $GLOBALS['bp'] ) ) {
 			
 			// we've got it
 			$bp = '<p>BuddyPress installed</p>';
@@ -1309,10 +1309,10 @@ class CommentPressBuddyPress {
 		add_action( 'cpmu_bp_after_blog_details_fields', array( &$this, 'signup_blogform' ) );
 		
 		// activate blog-specific CommentPress plugin
-		add_action('wpmu_new_blog', array( &$this, 'wpmu_new_blog' ), 12, 6); // includes/ms-functions.php
+		add_action( 'wpmu_new_blog', array( &$this, 'wpmu_new_blog' ), 12, 6 ); // includes/ms-functions.php
 	
 		// register any public styles
-		add_action('wp_enqueue_scripts', array( &$this, 'add_frontend_styles' ), 20);
+		add_action( 'wp_enqueue_scripts', array( &$this, 'add_frontend_styles' ), 20 );
 	
 		// is this the back end?
 		if ( is_admin() ) {

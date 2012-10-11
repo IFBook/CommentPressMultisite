@@ -52,11 +52,13 @@ if ( !class_exists( 'CommentPressMultiSiteLoader' ) ) {
 	// we're fine, include class definition
 	require_once( $class_file_path );
 
+	// define as global
+	global $cpmu_obj;
+
 	// instantiate it
 	$cpmu_obj = new CommentPressMultiSiteLoader;
 	
 }
-
 
 
 
@@ -257,5 +259,3 @@ function _cpmu_test() {
 
 
 
-
-?>

@@ -313,7 +313,8 @@ class CommentPressMultiSite {
 	function signup_blogform( $errors ) {
 	
 		// only apply to wordpress signup form (not the BuddyPress one)
-		if ( !defined( 'BP_VERSION' ) ) {
+		// TODO: make sure this method never fires when BP is active
+		if ( !isset( $GLOBALS['bp'] ) ) {
 		
 			// define title
 			$title = __( 'CommentPress:', 'cp-multisite' );

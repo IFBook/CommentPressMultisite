@@ -256,22 +256,34 @@ class CommentPressMultiSiteLoader {
 		// optionally load buddypress object 
 		// ----------------------------------------
 	
-		// is BuddyPress set up?
-		if ( $this->is_buddypress ) {
+		// load when buddypress is loaded
+		add_action( 'bp_include', array( &$this, '_load_buddypress_object' ) );
+
+	}
+	
+	
+	
+
+
+
+	/** 
+	 * @description: BuddyPress object initialisation
+	 * @todo:
+	 *
+	 */
+	function _load_buddypress_object() {
+	
+		// define filename
+		$class_file = 'class_commentpress_mu_bp.php';
+	
+		// get path
+		$class_file_path = cpmu_file_is_present( $class_file );
 		
-			// define filename
-			$class_file = 'class_commentpress_mu_bp.php';
-		
-			// get path
-			$class_file_path = cpmu_file_is_present( $class_file );
-			
-			// we're fine, include class definition
-			require_once( $class_file_path );
-		
-			// init buddypress object
-			$this->bp = new CommentPressBuddyPress( $this );
-			
-		}
+		// we're fine, include class definition
+		require_once( $class_file_path );
+	
+		// init buddypress object
+		$this->bp = new CommentPressBuddyPress( $this );
 
 	}
 	
