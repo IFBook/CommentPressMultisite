@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Commentpress for Multisite
-Version: 1.0
+Version: 1.0.1
 Plugin URI: http://www.futureofthebook.org/commentpress/
 Description: This plugin integrates CommentPress in a WordPress Multisite environment. It can be used alone or in conjunction with BuddyPress and BP Groupblog, depending on your needs. <strong>Note: this plugin must be Network Activated.</strong>
 Author: Institute for the Future of the Book
