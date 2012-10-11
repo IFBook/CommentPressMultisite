@@ -1732,7 +1732,7 @@ class CommentPressBuddyPress {
 		$title = __( 'CommentPress Options', 'cp-multisite' );
 		
 		// define text
-		$text = __( 'Do you want to make the new blog a Commentpress document?', 'cp-multisite' );
+		$text = __( 'Do you want to make the new site a Commentpress document?', 'cp-multisite' );
 		
 		// define enable label
 		$enable_label = __( 'Enable CommentPress', 'cp-multisite' );
@@ -1825,7 +1825,7 @@ class CommentPressBuddyPress {
 			<p>'.$text.'</p>
 
 			<div class="checkbox">
-				<label for="cpmu-new-blog"><input type="checkbox" value="1" id="cpbp-new-blog" name="cpmu-new-blog" /> '.$enable_label.'</label>
+				<label for="cpbp-new-blog"><input type="checkbox" value="1" id="cpbp-new-blog" name="cpbp-new-blog" /> '.$enable_label.'</label>
 			</div>
 
 			'.$workflow_html.'

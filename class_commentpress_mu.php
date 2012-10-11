@@ -330,7 +330,7 @@ class CommentPressMultiSite {
 			$title = __( 'CommentPress:', 'cp-multisite' );
 			
 			// define text
-			$text = __( 'Do you want to make the new blog a Commentpress document?', 'cp-multisite' );
+			$text = __( 'Do you want to make the new site a Commentpress document?', 'cp-multisite' );
 			
 			// define enable label
 			$enable_label = __( 'Enable CommentPress', 'cp-multisite' );
