@@ -808,8 +808,11 @@ class CommentPressBuddyPress {
 			
 		}
 	
-		// If we found an activity for this blog post then overwrite that to avoid have multiple activities for every blog post edit
-		if ( $id ) $activity->id = $id;
+		// If we found an activity for this blog post then overwrite that to avoid 
+		// having multiple activities for every blog post edit
+		if ( $id ) {
+			$activity->id = $id;
+		}
 		
 		// allow plugins to override the name of the activity item
 		$activity_name = apply_filters(
@@ -875,18 +878,37 @@ class CommentPressBuddyPress {
 			}
 			
 		}
-			
-		// Replace the necessary values to display in group activity stream
-		$activity->action = sprintf( 
 		
-			__( '%s wrote a new %s %s in the group %s:', 'cp-multisite' ),
+		// if we're replacing an item, show different message...
+		if ( $id ) {
 			
-			$activity_author, 
-			$activity_name, 
-			'<a href="' . get_permalink( $post->ID ) .'">' . esc_attr( $post->post_title ) . '</a>', 
-			'<a href="' . bp_get_group_permalink( $group ) . '">' . esc_attr( $group->name ) . '</a>' 
+			// replace the necessary values to display in group activity stream
+			$activity->action = sprintf( 
 			
-		);
+				__( '%s updated a %s %s in the group %s:', 'cp-multisite' ),
+				
+				$activity_author, 
+				$activity_name, 
+				'<a href="' . get_permalink( $post->ID ) .'">' . esc_attr( $post->post_title ) . '</a>', 
+				'<a href="' . bp_get_group_permalink( $group ) . '">' . esc_attr( $group->name ) . '</a>' 
+				
+			);
+			
+		} else {
+		
+			// replace the necessary values to display in group activity stream
+			$activity->action = sprintf( 
+			
+				__( '%s wrote a new %s %s in the group %s:', 'cp-multisite' ),
+				
+				$activity_author, 
+				$activity_name, 
+				'<a href="' . get_permalink( $post->ID ) .'">' . esc_attr( $post->post_title ) . '</a>', 
+				'<a href="' . bp_get_group_permalink( $group ) . '">' . esc_attr( $group->name ) . '</a>' 
+				
+			);
+			
+		}
 		
 		$activity->item_id = (int)$group_id;
 		$activity->component = 'groups';
@@ -1373,6 +1395,9 @@ class CommentPressBuddyPress {
 	 */
 	function _groupblog_activity_mods() {
 		
+		// allow lists in activity content
+		add_action( 'bp_activity_allowed_tags', array( &$this, '_activity_allowed_tags' ), 20, 1 );
+		
 		// ditch bp-groupblog's post activity action
 		remove_action( 'bp_activity_before_save', 'bp_groupblog_set_group_to_post_activity' );
 
@@ -1386,6 +1411,38 @@ class CommentPressBuddyPress {
 		// instead, I'm trying to store the blog_type as group meta data
 		//add_action( 'bp_activity_after_save', array( &$this, 'groupblog_custom_comment_meta' ), 20, 1 );
 		//add_action( 'bp_activity_after_save', array( &$this, 'groupblog_custom_post_meta' ), 20, 1 );
+		
+	}
+	
+	
+	
+
+
+
+	/**
+	 * @description: allow our TinyMCE comment markup in activity content
+	 * @todo:
+	 */
+	function _activity_allowed_tags( $activity_allowedtags ) {
+		
+		//print_r( $activity_allowedtags ); die();
+		
+		// lists
+		$activity_allowedtags['ul'] = array();
+		$activity_allowedtags['ol'] = array();
+		$activity_allowedtags['li'] = array();
+		
+		// bold
+		$activity_allowedtags['strong'] = array();
+		
+		// italic
+		$activity_allowedtags['em'] = array();
+		
+		// underline
+		$activity_allowedtags['span']['style'] = array();
+		
+		// --<
+		return $activity_allowedtags;
 		
 	}
 	
